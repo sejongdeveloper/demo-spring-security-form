@@ -1,5 +1,6 @@
 package me.whiteship.demospringsecurityform.form;
 
+import me.whiteship.demospringsecurityform.account.Account;
 import me.whiteship.demospringsecurityform.account.AccountContext;
 import me.whiteship.demospringsecurityform.account.AccountRepository;
 import me.whiteship.demospringsecurityform.account.UserAccount;
@@ -24,11 +25,11 @@ public class SampleController {
     AccountRepository accountRepository;
 
     @GetMapping("/")
-    public String index(Model model, @AuthenticationPrincipal UserAccount userAccount) {
-        if (userAccount == null) {
+    public String index(Model model, @AuthenticationPrincipal(expression = "#this == 'anonymousUser' ? null : account") Account account) {
+        if (account == null) {
             model.addAttribute("message", "Hello Spring Security");
         } else {
-            model.addAttribute("message", "Hello " + userAccount.getUsername());
+            model.addAttribute("message", "Hello " + account.getUsername());
         }
         return "index";
     }
