@@ -4,6 +4,7 @@ import me.whiteship.demospringsecurityform.account.Account;
 import me.whiteship.demospringsecurityform.account.AccountContext;
 import me.whiteship.demospringsecurityform.account.AccountRepository;
 import me.whiteship.demospringsecurityform.account.UserAccount;
+import me.whiteship.demospringsecurityform.common.CurrentUser;
 import me.whiteship.demospringsecurityform.common.SecurityLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,7 +26,7 @@ public class SampleController {
     AccountRepository accountRepository;
 
     @GetMapping("/")
-    public String index(Model model, @AuthenticationPrincipal(expression = "#this == 'anonymousUser' ? null : account") Account account) {
+    public String index(Model model, @CurrentUser Account account) {
         if (account == null) {
             model.addAttribute("message", "Hello Spring Security");
         } else {
